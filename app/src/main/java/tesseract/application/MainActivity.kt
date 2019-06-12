@@ -2,13 +2,15 @@ package tesseract.application
 
 import android.Manifest
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import android.widget.*
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -22,11 +24,42 @@ import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        mSelectedImage = null
+        when (position) {
+            0 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161854.jpg")
+            1 -> mSelectedImage = getBitmapFromAsset(this, "20190611_163816.jpg")
+            2 -> mSelectedImage = getBitmapFromAsset(this, "20190611_163931.jpg")
+            3 -> mSelectedImage = getBitmapFromAsset(this, "20190611_164039.jpg")
+            4 -> mSelectedImage = getBitmapFromAsset(this, "20190611_164808.jpg")
+            5 -> mSelectedImage = getBitmapFromAsset(this, "20190612_160053.jpg")
+            6 -> mSelectedImage = getBitmapFromAsset(this, "20190612_160330.jpg")
+            7 -> mSelectedImage = getBitmapFromAsset(this, "20190612_160550.jpg")
+            8 -> mSelectedImage = getBitmapFromAsset(this, "20190612_160758.jpg")
+            9 -> mSelectedImage = getBitmapFromAsset(this, "20190612_160845.jpg")
+            10 -> mSelectedImage = getBitmapFromAsset(this, "20190612_160933.jpg")
+            11 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161019.jpg")
+            12 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161141.jpg")
+            13 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161550.jpg")
+            14 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161649.jpg")
+            16 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161821.jpg")
+            17 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161854.jpg")
+        }
+        imageView!!.setImageBitmap(mSelectedImage)
+        DoOCRTask(text,this@MainActivity,mSelectedImage!!).execute()
+    }
 
 
+    private var mSelectedImage: Bitmap? = null
     private var mTessOCR: TessOCR? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +82,30 @@ class MainActivity : AppCompatActivity() {
                 }).check()
 
 
+        val dropdown = findViewById<Spinner>(R.id.spinner)
+        val items = arrayOf(
+                "KTP 1",
+                "KTP 2",
+                "KTP 3",
+                "KTP 4",
+                "KTP 5",
+                "KTP 6",
+                "KTP 7",
+                "KTP 8",
+                "KTP 9",
+                "KTP 10",
+                "KTP 11",
+                "KTP 12",
+                "KTP 13",
+                "KTP 14",
+                "KTP 15",
+                "KTP 16",
+                "KTP 17",
+                "KTP 18")
+        val adapter = ArrayAdapter(this, android.R.layout
+                .simple_spinner_dropdown_item, items)
+        dropdown.adapter = adapter
+        dropdown.onItemSelectedListener = this
     }
 
     private fun doOCR(bitmap: Bitmap) {
@@ -63,6 +120,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    class DoOCRTask(textView: TextView, context: Context, bitmap: Bitmap) : AsyncTask<Unit, String, String>() {
+
+        val textView: TextView? = textView
+        val context: Context? = context
+        val bitmap: Bitmap? = bitmap
+        private var mTessOCR: TessOCR? = null
+
+        fun handleResult(result: String?): String {
+            return Regex("""\d{16}""").find(result!!)?.value!!
+        }
+
+        override fun doInBackground(vararg params: Unit?): String? {
+            mTessOCR = TessOCR(context!!)
+            val srcText = mTessOCR!!.getOCRResult(bitmap!!)
+            mTessOCR!!.onDestroy()
+            return srcText
+        }
+
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+
+            textView!!.text = handleResult(result)
+
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, object : DefaultCallback() {
@@ -74,7 +158,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun handleBitmap(imageFile: File?){
+    fun handleBitmap(imageFile: File?) {
         try {
             var options = BitmapFactory.Options()
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
@@ -87,9 +171,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun handleResult(result : String?) : String{
+    fun handleResult(result: String?): String {
         return Regex("""\d{16}""").find(result!!)?.value!!
     }
 
+    fun getBitmapFromAsset(context: Context, filePath: String): Bitmap? {
+        val assetManager = context.assets
+        val `is`: InputStream
+        var bitmap: Bitmap? = null
+        try {
+            `is` = assetManager.open(filePath)
+            bitmap = BitmapFactory.decodeStream(`is`)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return bitmap
+    }
 
 }

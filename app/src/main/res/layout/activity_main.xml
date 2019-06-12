@@ -5,36 +5,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/imageView">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </ScrollView>
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
         tools:srcCompat="@tools:sample/backgrounds/scenic[13]" />
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/imageView"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
 
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imageView"
-        android:layout_margin="@android:dimen/app_icon_size"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/spinner"
+        android:layout_margin="5dp"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
@@ -49,8 +43,65 @@
             android:id="@+id/button_camera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_weight="1"
             android:text="Open Camera" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/demo_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="This is demo using Tesseract OCR, with model that trained with OCR-A Font."
+        android:layout_below="@+id/linear_layout"/>
+
+    <TextView
+        android:id="@+id/demo_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:text="https://github.com/tesseract-ocr/tesseract"
+        android:layout_below="@+id/demo_1"/>
+    <TextView
+        android:id="@+id/demo_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:text="https://fonts.adobe.com/fonts/ocr-a"
+        android:layout_below="@+id/demo_2"/>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/demo_3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_margin="10dp"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_margin="10dp"
+                android:textStyle="italic"
+                android:textColor="@android:color/holo_orange_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sample image above was using Real KTP, with different type of lighting, different type of cropping result and different type of KTP. If NIK didn't show or not showing correctly, Its because glare or lighting"/>
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
