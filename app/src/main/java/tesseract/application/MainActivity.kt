@@ -48,9 +48,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             11 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161019.jpg")
             12 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161141.jpg")
             13 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161550.jpg")
-            14 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161649.jpg")
-            16 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161821.jpg")
-            17 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161854.jpg")
+            14 -> mSelectedImage = getBitmapFromAsset(this, "20190612_161821.jpg")
         }
         imageView!!.setImageBitmap(mSelectedImage)
         DoOCRTask(text,this@MainActivity,mSelectedImage!!).execute()
@@ -84,24 +82,21 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         val dropdown = findViewById<Spinner>(R.id.spinner)
         val items = arrayOf(
-                "KTP 1",
-                "KTP 2",
-                "KTP 3",
-                "KTP 4",
-                "KTP 5",
-                "KTP 6",
-                "KTP 7",
-                "KTP 8",
-                "KTP 9",
-                "KTP 10",
-                "KTP 11",
-                "KTP 12",
-                "KTP 13",
-                "KTP 14",
-                "KTP 15",
-                "KTP 16",
-                "KTP 17",
-                "KTP 18")
+                "Yudha (Normal)",
+                "Sandi (Normal)",
+                "Fawzi (With finger)",
+                "Fawzi (Less finger)",
+                "Suseno (Normal)",
+                "Chandra (Low light)",
+                "Johannes (Low Light)",
+                "Fawzi (Low Light)",
+                "Pauly (Glare)",
+                "Fawzi (Glare)",
+                "Wahyu (Low Light)",
+                "Pauly (Low Light)",
+                "Lucky (Tilted)",
+                "Yudha (Low Light & Tilted)",
+                "Yudha (Glare)")
         val adapter = ArrayAdapter(this, android.R.layout
                 .simple_spinner_dropdown_item, items)
         dropdown.adapter = adapter
@@ -131,11 +126,21 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             return Regex("""\d{16}""").find(result!!)?.value!!
         }
 
+        override fun onPreExecute() {
+            super.onPreExecute()
+            textView!!.text = "Processing..result will appear soon"
+        }
+
         override fun doInBackground(vararg params: Unit?): String? {
-            mTessOCR = TessOCR(context!!)
-            val srcText = mTessOCR!!.getOCRResult(bitmap!!)
-            mTessOCR!!.onDestroy()
-            return srcText
+            try {
+                mTessOCR = TessOCR(context!!)
+                val srcText = mTessOCR!!.getOCRResult(bitmap!!)
+                mTessOCR!!.onDestroy()
+                return srcText
+            }catch(e : Exception){
+                return e.message
+            }
+
         }
 
 

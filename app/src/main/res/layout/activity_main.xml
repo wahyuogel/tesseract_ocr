@@ -14,23 +14,23 @@
         android:layout_margin="10dp"
         tools:srcCompat="@tools:sample/backgrounds/scenic[13]" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="5dp"
-        android:layout_below="@+id/imageView"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown" />
 
     <LinearLayout
         android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinner"
-        android:layout_margin="5dp"
+        android:layout_below="@id/imageView"
         android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/button_gallery"
@@ -39,41 +39,43 @@
             android:layout_weight="1"
             android:text="Open Gallery" />
 
+
         <Button
             android:id="@+id/button_camera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_weight="1"
-            android:text="Open Camera" />
+            android:text="Open Camera"
+            android:visibility="gone" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/demo_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_layout"
         android:layout_margin="10dp"
-        android:text="This is demo using Tesseract OCR, with model that trained with OCR-A Font."
-        android:layout_below="@+id/linear_layout"/>
+        android:text="This is demo using Tesseract OCR, with model that trained with OCR-A Font." />
 
     <TextView
         android:id="@+id/demo_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/demo_1"
         android:layout_marginLeft="10dp"
-        android:textColor="@android:color/holo_blue_dark"
+        android:layout_marginTop="5dp"
         android:text="https://github.com/tesseract-ocr/tesseract"
-        android:layout_below="@+id/demo_1"/>
+        android:textColor="@android:color/holo_blue_dark" />
+
     <TextView
         android:id="@+id/demo_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/demo_2"
         android:layout_marginLeft="10dp"
-        android:textColor="@android:color/holo_blue_dark"
+        android:layout_marginTop="5dp"
         android:text="https://fonts.adobe.com/fonts/ocr-a"
-        android:layout_below="@+id/demo_2"/>
+        android:textColor="@android:color/holo_blue_dark" />
 
 
     <ScrollView
@@ -88,19 +90,19 @@
 
             <TextView
                 android:id="@+id/text"
-                android:layout_margin="10dp"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_margin="10dp"
-                android:textStyle="italic"
-                android:textColor="@android:color/holo_orange_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sample image above was using Real KTP, with different type of lighting, different type of cropping result and different type of KTP. If NIK didn't show or not showing correctly, Its because glare or lighting"/>
+                android:layout_margin="10dp"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Sample image above was using Real KTP, with different type of lighting, different type of cropping result and different type of KTP. If NIK didn't show or not showing correctly, Its because glare or lighting"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textStyle="italic" />
         </LinearLayout>
     </ScrollView>
 
